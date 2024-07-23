@@ -12,6 +12,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@capacitor-community/contacts": "^6.0.5-alpha.0",
+    "@capacitor/android": "^6.1.1",
     "@capacitor/app": "6.0.0",
     "@capacitor/core": "6.1.1",
     "@capacitor/haptics": "6.0.0",
