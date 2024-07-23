@@ -12,11 +12,12 @@
     </ion-header>
     <ion-content>
       <ion-list>
-        <ion-item v-for="contact in contacts" :key="contact.id">
-          <ion-label color="primary">
-            <h2>{{ contact.name["display"] }}</h2>
-            <p>{{contact.phones?.[0]?.number}}</p>
-          </ion-label>
+        <ion-item v-for="contact in contacts" :key="contact.contactId" @click="navigateToContactDetail(contact)">
+            <ion-label color="primary">
+              <h2>{{ contact.name!["display"] }}</h2>
+              <p>{{contact.phones?.[0]?.number}}</p>
+            </ion-label>
+        
         </ion-item>
       </ion-list>
         <!-- Kontaktformular -->
@@ -28,7 +29,7 @@
               </ion-buttons>
               <ion-title>Neuer Kontakt</ion-title>
               <ion-buttons slot="end">
-                <ion-button @click="createNewContact">Fertig</ion-button>
+                <ion-button @click="createNewContact">Speichern</ion-button>
               </ion-buttons>
             </ion-toolbar>
           </ion-header>
@@ -36,14 +37,14 @@
             <ion-item>
               <ion-input
                 placeholder="Vorname"
-                v-model="newContact.firstName"
+                v-model="newContact.given"
                 @ionInput="onInput"
               ></ion-input>
             </ion-item>
             <ion-item>
               <ion-input
                 placeholder="Nachname"
-                v-model="newContact.lastName"
+                v-model="newContact.family"
                 @ionInput="onInput"
               ></ion-input>
             </ion-item>
@@ -93,7 +94,7 @@ import {
   IonInput,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
-import { Contacts, PhoneType, EmailType} from "@capacitor-community/contacts";
+import { Contacts, PhoneType, EmailType, ContactPayload} from "@capacitor-community/contacts";
 import { add } from 'ionicons/icons';
 
 export default defineComponent({
@@ -117,11 +118,11 @@ export default defineComponent({
 
   data() {
     return {
-      contacts: [] as any[],
+      contacts: [] as ContactPayload[],
       isAddContactModalOpen: false,
       newContact: {
-        firstName: '',
-        lastName: '',
+        given: '',
+        family: '',
         phoneNumber: '',
         emailAddress: '',
         birthday: '',
@@ -129,7 +130,7 @@ export default defineComponent({
     };
   },
   async created() {
-    await this.retrieveListOfContacts ();
+    await this.retrieveListOfContacts();
   },
   methods: {
     async retrieveListOfContacts () {
@@ -151,12 +152,16 @@ export default defineComponent({
     },
 
     sortContactsByFirstName() {
+      // Function to sort contacts by given name
       this.contacts.sort((a, b) => {
-        const nameA = a.name["given"];
-        const nameB = b.name["given"];
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
+        console.log(a);
+        if (a.name!['given']?.toLowerCase()! < b.name!['given']?.toLowerCase()!) {
+          return -1;
+        } else if (a.name!['given']?.toLowerCase()! > b.name!['given']?.toLowerCase()!) {
+          return 1;
+        } else {
+          return 0;
+        }
       });
     },
 
@@ -167,6 +172,7 @@ export default defineComponent({
       this.isAddContactModalOpen = false;
     },
 
+   
     onInput(event: CustomEvent){
       console.log(event.detail.value);
     },
@@ -179,8 +185,8 @@ export default defineComponent({
       const res = await Contacts.createContact({
         contact: {
           name: {
-            given: this.newContact.firstName,
-            family: this.newContact.lastName,
+            given: this.newContact.given,
+            family: this.newContact.family,
           },
           birthday: {
             year: parseInt(this.newContact.birthday.slice(6)),
@@ -208,8 +214,8 @@ export default defineComponent({
       this.newContact.phoneNumber = '';
       this.newContact.birthday = '';
       this.newContact.emailAddress = '';
-      this.newContact.firstName = '';
-      this.newContact.lastName = '';
+      this.newContact.given = '';
+      this.newContact.family = '';
     },
   },
 });
