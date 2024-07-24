@@ -14,11 +14,11 @@ const routes: Array<RouteRecordRaw> = [
     component: HomePage
   },
   {
-    path: '/detail/:id',
+    path: '/contact/:contactId',
     name: 'ContactDetail',
     component: ContactDetail,
     props: true
-  }
+  },
 ]
 
 const router = createRouter({

@@ -12,7 +12,7 @@
     </ion-header>
     <ion-content>
       <ion-list>
-        <ion-item v-for="contact in contacts" :key="contact.contactId" @click="">
+        <ion-item v-for="contact in contacts" :key="contact.contactId" @click="pushContactDetail(contact)">
             <ion-label color="primary">
               <h2>{{ contact.name!["display"] }}</h2>
               <p>{{contact.phones?.[0]?.number}}</p>
@@ -96,6 +96,7 @@ import {
 import { defineComponent } from "vue";
 import { Contacts, PhoneType, EmailType, ContactPayload} from "@capacitor-community/contacts";
 import { add } from 'ionicons/icons';
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -113,7 +114,8 @@ export default defineComponent({
   },
 
   setup() {
-    return { add }
+    const router = useRouter();
+    return { add, router }
   },
 
   data() {
@@ -177,8 +179,8 @@ export default defineComponent({
       console.log(event.detail.value);
     },
 
-    addContact(){
-      this.contacts
+    pushContactDetail(contact: ContactPayload){ //Eigentlich wird nur contactId benötigt / routing geht mit diesem Ansatz nur mit Strings
+      this.router.push({name: 'ContactDetail', params: {contactId: contact.contactId} });
     },
 
     async createNewContact () {
