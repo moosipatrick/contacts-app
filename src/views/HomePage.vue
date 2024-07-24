@@ -12,7 +12,7 @@
     </ion-header>
     <ion-content>
       <ion-list>
-        <ion-item v-for="contact in contacts" :key="contact.contactId" @click="navigateToContactDetail(contact)">
+        <ion-item v-for="contact in contacts" :key="contact.contactId" @click="">
             <ion-label color="primary">
               <h2>{{ contact.name!["display"] }}</h2>
               <p>{{contact.phones?.[0]?.number}}</p>
