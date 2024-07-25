@@ -5,6 +5,11 @@
         <ion-buttons slot="start">
           <ion-back-button></ion-back-button>
         </ion-buttons>
+        <ion-buttons slot="end">
+        <ion-button @click="deleteContact(contact.contactId)">
+          <ion-icon :icon="trashBinOutline" size="large" color="primary"></ion-icon>
+        </ion-button>
+        </ion-buttons>
         <ion-title>Kontakt Details</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -48,11 +53,13 @@
     IonIcon,
     IonModal,
     IonInput,
-    IonBackButton
+    IonBackButton,
+    
   } from "@ionic/vue";
   import { defineComponent, onMounted } from "vue";
   import { useRoute } from 'vue-router';
   import { Contacts, ContactPayload} from "@capacitor-community/contacts";
+  import { trashBinOutline } from 'ionicons/icons';
   
   export default defineComponent({
     components: {
@@ -68,10 +75,12 @@
       IonModal,
       IonInput,
       IonBackButton,
+    
     },
   
     setup() {
         
+      return{trashBinOutline}
         
     },
   
@@ -105,7 +114,19 @@
         this.contact = result.contact;
         
       } catch (error) {
-        console.error("Error loading contacts", error);
+        console.error("Error loading contact", error);
+      }
+    },
+
+    async deleteContact (contactId: string) {
+      try {
+          await Contacts.deleteContact({
+            contactId: contactId,
+          });
+          //ROUTER
+          
+      } catch (error) {
+        console.error("Error deleting contact", error);
       }
     },
 
