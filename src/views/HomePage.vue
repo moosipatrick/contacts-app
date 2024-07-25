@@ -191,9 +191,9 @@ export default defineComponent({
             family: this.newContact.family,
           },
           birthday: {
-            year: parseInt(this.newContact.birthday.slice(6)),
-            month: parseInt(this.newContact.birthday.slice(3,4)),
-            day: parseInt(this.newContact.birthday.slice(0,1)),
+            year: parseInt(this.newContact.birthday.slice(0,4)),
+            month: parseInt(this.newContact.birthday.slice(5,7)),
+            day: parseInt(this.newContact.birthday.slice(8,10)),
           },
           phones: [
             {
