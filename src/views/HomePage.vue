@@ -20,60 +20,60 @@
         
         </ion-item>
       </ion-list>
-        <!-- Kontaktformular -->
-        <ion-modal :is-open="isAddContactModalOpen" @will-dismiss="closeAddContactModal">
-          <ion-header>
-            <ion-toolbar>
-              <ion-buttons slot="start">
-                <ion-button @click="closeAddContactModal">Abbrechen</ion-button>
-              </ion-buttons>
-              <ion-title>Neuer Kontakt</ion-title>
-              <ion-buttons slot="end">
-                <ion-button @click="createNewContact">Speichern</ion-button>
-              </ion-buttons>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content>
-            <ion-item>
-              <ion-input
-                placeholder="Vorname"
-                v-model="newContact.given"
-                @ionInput="onInput"
-              ></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input
-                placeholder="Nachname"
-                v-model="newContact.family"
-                @ionInput="onInput"
-              ></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input
-                type="tel"
-                placeholder="Telefonnummer"
-                v-model="newContact.phoneNumber"
-                @ionInput="onInput"
-              ></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input
-                type="email"
-                placeholder="E-Mail-Adresse"
-                v-model="newContact.emailAddress"
-                @ionInput="onInput"
-              ></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label>Geburtstag</ion-label>
-              <ion-input
-                type="date"
-                placeholder="Geburtstag"
-                v-model="newContact.birthday"
-                @ionInput="onInput"
-              ></ion-input>
-            </ion-item>
-          </ion-content>
+      <!-- Kontaktformular -->
+      <ion-modal :is-open="isAddContactModalOpen" @will-dismiss="closeAddContactModal">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button @click="closeAddContactModal">Abbrechen</ion-button>
+            </ion-buttons>
+            <ion-title>Neuer Kontakt</ion-title>
+            <ion-buttons slot="end">
+              <ion-button @click="createNewContact">Speichern</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-item>
+            <ion-input
+              placeholder="Vorname"
+              v-model="newContact.given"
+              @ionInput="onInput"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input
+              placeholder="Nachname"
+              v-model="newContact.family"
+              @ionInput="onInput"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input
+              type="tel"
+              placeholder="Telefonnummer"
+              v-model="newContact.phoneNumber"
+              @ionInput="onInput"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input
+              type="email"
+              placeholder="E-Mail-Adresse"
+              v-model="newContact.emailAddress"
+              @ionInput="onInput"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Geburtstag</ion-label>
+            <ion-input
+              type="date"
+              placeholder="Geburtstag"
+              v-model="newContact.birthday"
+              @ionInput="onInput"
+            ></ion-input>
+          </ion-item>
+        </ion-content>
       </ion-modal>      
     </ion-content>
   </ion-page>
@@ -134,6 +134,11 @@ export default defineComponent({
   async created() {
     await this.retrieveListOfContacts();
   },
+  watch:{
+    // Watch for route changes / Es wird auf diese Art gelöst, da sich bei jedem löschen die IDs der übrigen KOntakte ändern kann????
+    '$route': 'retrieveListOfContacts'
+  },
+
   methods: {
     async retrieveListOfContacts () {
       try {
