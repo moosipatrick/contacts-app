@@ -13,11 +13,10 @@
     <ion-content>
       <ion-list>
         <ion-item v-for="contact in contacts" :key="contact.contactId" @click="pushContactDetail(contact)">
-            <ion-label color="primary">
-              <h2>{{ contact.name!["display"] }}</h2>
-              <p>{{contact.phones?.[0]?.number}}</p>
-            </ion-label>
-        
+          <ion-label color="primary">
+            <h2>{{ contact.name!["display"] }}</h2>
+            <p>{{contact.phones?.[0]?.number}}</p>
+          </ion-label>
         </ion-item>
       </ion-list>
       <!-- Kontaktformular -->
@@ -33,46 +32,62 @@
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
-        <ion-content>
-          <ion-item>
-            <ion-input
-              placeholder="Vorname"
-              v-model="newContact.given"
-              @ionInput="onInput"
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input
-              placeholder="Nachname"
-              v-model="newContact.family"
-              @ionInput="onInput"
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input
-              type="tel"
-              placeholder="Telefonnummer"
-              v-model="newContact.phoneNumber"
-              @ionInput="onInput"
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input
-              type="email"
-              placeholder="E-Mail-Adresse"
-              v-model="newContact.emailAddress"
-              @ionInput="onInput"
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label>Geburtstag</ion-label>
-            <ion-input
-              type="date"
-              placeholder="Geburtstag"
-              v-model="newContact.birthday"
-              @ionInput="onInput"
-            ></ion-input>
-          </ion-item>
+        <ion-content class="modal-content">
+          <div class="form-group">
+            <div class="floating-label-wrapper">
+              <ion-input
+                class="floating-label-input"
+                type="text"
+                placeholder=" "
+                v-model="newContact.given"
+              ></ion-input>
+              <label class="floating-label">Vorname</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="floating-label-wrapper">
+              <ion-input
+                class="floating-label-input"
+                type="text"
+                placeholder=" "
+                v-model="newContact.family"
+              ></ion-input>
+              <label class="floating-label">Nachname</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="floating-label-wrapper">
+              <ion-input
+                class="floating-label-input"
+                type="tel"
+                placeholder=" "
+                v-model="newContact.phoneNumber"                
+              ></ion-input>
+              <label class="floating-label">Telefonnummer</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="floating-label-wrapper">
+              <ion-input
+                class="floating-label-input"
+                type="email"
+                placeholder=" "
+                v-model="newContact.emailAddress"
+              ></ion-input>
+              <label class="floating-label">E-Mail-Adresse</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="floating-label-wrapper">
+              <ion-input
+                class="floating-label-input"
+                type="date"
+                placeholder=" "
+                v-model="newContact.birthday"
+              ></ion-input>
+              <label class="floating-label">Geburtstag</label>
+            </div>
+          </div>
         </ion-content>
       </ion-modal>      
     </ion-content>
@@ -185,11 +200,6 @@ export default defineComponent({
       this.newContact.family = '';
     },
 
-   
-    onInput(event: CustomEvent){
-      console.log(event.detail.value);
-    },
-
     pushContactDetail(contact: ContactPayload){ //Eigentlich wird nur contactId benötigt / routing geht mit diesem Ansatz nur mit Strings
       this.router.push({name: 'ContactDetail', params: {contactId: contact.contactId} });
     },
@@ -235,17 +245,69 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Optional styles for better visibility */
-ion-item {
-  margin-bottom: 10px;
+/* General styles for the modal content */
+.modal-content {
+  padding: 20px;
+  background: #f9f9f9;
+  margin-top: 60px; /* Sicherstellen, dass der Inhalt nicht vom Header überlappt wird */
+  overflow-y: auto; /* Ermöglicht das Scrollen, wenn der Inhalt den sichtbaren Bereich überschreitet */
 }
 
-ion-label {
-  color: #000; /* Set label color for better readability */
+/* General styles for form spacing */
+.form-group {
+  margin-bottom: 20px;
 }
 
-ion-input {
-  --padding-start: 0; /* Adjust padding if necessary */
-  --padding-end: 0; /* Adjust padding if necessary */
+/* Floating label wrapper */
+.floating-label-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+/* Floating label input styling */
+.floating-label-input {
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+  z-index: 1; /* Ensure input is above the label */
+}
+
+/* Hide the default placeholder text */
+.floating-label-input::placeholder {
+  color: transparent;
+}
+
+/* Floating label styling */
+.floating-label {
+  position: absolute;
+  top: 16px;
+  left: 12px;
+  font-size: 16px;
+  color: #aaa;
+  transition: all 0.2s ease-in-out;
+  pointer-events: none;
+  background: #f9f9f9; /* Same background as input to cover any overlap */
+  padding: 0 4px; /* Add padding to ensure the label is not cut off */
+  z-index: 0; /* Ensure label is below the input */
+}
+
+/* Label animation */
+.floating-label-input:focus ~ .floating-label,
+.floating-label-input:not(:placeholder-shown) ~ .floating-label {
+  top: -12px; /* Adjust the top value to move the label above the input */
+  font-size: 12px;
+  color: #007bff; /* Change color when focused */
+}
+
+/* Add focus border and shadow */
+.floating-label-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 </style>
