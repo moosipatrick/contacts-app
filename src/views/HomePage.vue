@@ -5,7 +5,7 @@
         <ion-title>Kontakte</ion-title>
         <ion-buttons slot="end">
           <ion-button @click="showAddContactModal">
-            <ion-icon :icon="add" size="large" color="primary"></ion-icon>
+            <ion-icon :icon="add" size="large"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -13,9 +13,8 @@
     <ion-content>
       <ion-list>
         <ion-item v-for="contact in contacts" :key="contact.contactId" @click="pushContactDetail(contact)">
-          <ion-label color="primary">
+          <ion-label>
             <h2>{{ contact.name!["display"] }}</h2>
-            <p>{{contact.phones?.[0]?.number}}</p>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -245,6 +244,17 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+ion-icon {
+  color: #3880ff;
+}
+
+ion-label h2 {
+  color: black;
+  font-weight: bold;
+  font-style: normal;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 /* General styles for the modal content */
 .modal-content {
   padding: 20px;
