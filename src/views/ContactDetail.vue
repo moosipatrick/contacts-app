@@ -35,7 +35,7 @@
 
           <ion-item lines="none">
             <ion-icon :icon="giftOutline" slot="start"></ion-icon>
-            <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day)}.${formatDate(contact.birthday.month)}.${contact.birthday.year}` : '' }}</ion-label>
+            <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day as number)}.${formatDate(contact.birthday.month as number)}.${contact.birthday.year}` : '' }}</ion-label>
           </ion-item>
         </ion-card-content>
       </ion-card>
@@ -110,7 +110,7 @@ export default defineComponent({
     const router = useRouter();
 
     // Funktion zum Formatieren von Datumswerten
-    const formatDate = (date) => {
+    const formatDate = (date: number) => {
       var new_date = date.toString();
 
       if (new_date.length < 2) {
