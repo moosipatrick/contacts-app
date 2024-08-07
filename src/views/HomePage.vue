@@ -31,62 +31,37 @@
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="modal-content">
-          <div class="form-group">
-            <div class="floating-label-wrapper">
-              <ion-input
-                class="floating-label-input"
-                type="text"
-                placeholder=" "
-                v-model="newContact.given"
-              ></ion-input>
-              <label class="floating-label">Vorname</label>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="floating-label-wrapper">
-              <ion-input
-                class="floating-label-input"
-                type="text"
-                placeholder=" "
-                v-model="newContact.family"
-              ></ion-input>
-              <label class="floating-label">Nachname</label>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="floating-label-wrapper">
-              <ion-input
-                class="floating-label-input"
-                type="tel"
-                placeholder=" "
-                v-model="newContact.phoneNumber"                
-              ></ion-input>
-              <label class="floating-label">Telefonnummer</label>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="floating-label-wrapper">
-              <ion-input
-                class="floating-label-input"
-                type="email"
-                placeholder=" "
-                v-model="newContact.emailAddress"
-              ></ion-input>
-              <label class="floating-label">E-Mail-Adresse</label>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="floating-label-wrapper">
-              <ion-input
-                class="floating-label-input"
-                type="date"
-                placeholder=" "
-                v-model="newContact.birthday"
-              ></ion-input>
-              <label class="floating-label">Geburtstag</label>
-            </div>
-          </div>
+        <ion-content>
+          <ion-item>
+            <ion-label class="floating_label">Vorname</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-input v-model="newContact.given"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label class="floating_label">Nachname</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-input v-model="newContact.family"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label class="floating_label">Telefonnummer</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-input type="tel" v-model="newContact.phoneNumber"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label class="floating_label">Email</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-input type="email" v-model="newContact.emailAddress"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label class="floating_label">Geburtsdatum</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-input type="date" v-model="newContact.birthday"></ion-input>
+          </ion-item>
         </ion-content>
       </ion-modal>      
     </ion-content>
@@ -244,80 +219,48 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
-ion-icon {
-  color: #3880ff;
-}
-
-ion-label h2 {
-  color: black;
-  font-weight: bold;
+ion-title {
+  color: white;
   font-style: normal;
+  font-size: x-large;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-/* General styles for the modal content */
-.modal-content {
-  padding: 20px;
-  background: #f9f9f9;
-  margin-top: 60px; /* Sicherstellen, dass der Inhalt nicht vom Header überlappt wird */
-  overflow-y: auto; /* Ermöglicht das Scrollen, wenn der Inhalt den sichtbaren Bereich überschreitet */
+ion-modal ion-title {
+  font-size: large;
+  text-align: center;
+}
+ion-modal ion-button {
+  color: white;
+  font-size: small;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+ion-toolbar {
+  --background: #3880ff;
+}
+ion-icon {
+  color: white;
+}
+ion-label h2 {
+  color: black;
+  font-style: normal;
+  font-size: large;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* General styles for form spacing */
-.form-group {
-  margin-bottom: 20px;
+ion-modal ion-item {
+  --border-width: 0px; /* Entfernt die Border-Breite */
+  --border-color: transparent; /* Setzt die Border-Farbe auf transparent */
+  --border-style: none; /* Setzt den Border-Stil auf 'none' */
 }
-
-/* Floating label wrapper */
-.floating-label-wrapper {
-  position: relative;
-  margin-bottom: 20px;
+ion-input {
+  border-width: 2px; /* Breite der Border */
+  border-style: solid; /* Stil der Border (z.B. solid, dashed) */
+  border-color: #a9aeb8; /* Farbe der Border */
+  border-radius: 5px; /* Optionale Abrundung der Ecken */
 }
-
-/* Floating label input styling */
-.floating-label-input {
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  background: #fff;
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 16px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  position: relative;
-  z-index: 1; /* Ensure input is above the label */
-}
-
-/* Hide the default placeholder text */
-.floating-label-input::placeholder {
-  color: transparent;
-}
-
-/* Floating label styling */
-.floating-label {
-  position: absolute;
-  top: 16px;
-  left: 12px;
-  font-size: 16px;
-  color: #aaa;
-  transition: all 0.2s ease-in-out;
-  pointer-events: none;
-  background: #f9f9f9; /* Same background as input to cover any overlap */
-  padding: 0 4px; /* Add padding to ensure the label is not cut off */
-  z-index: 0; /* Ensure label is below the input */
-}
-
-/* Label animation */
-.floating-label-input:focus ~ .floating-label,
-.floating-label-input:not(:placeholder-shown) ~ .floating-label {
-  top: -12px; /* Adjust the top value to move the label above the input */
-  font-size: 12px;
-  color: #007bff; /* Change color when focused */
-}
-
-/* Add focus border and shadow */
-.floating-label-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+.floating_label {
+  height: 100%;
+  display: flex;
+  align-items: end;
 }
 </style>

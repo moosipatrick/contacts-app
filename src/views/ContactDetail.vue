@@ -35,7 +35,7 @@
 
           <ion-item lines="none">
             <ion-icon :icon="giftOutline" slot="start"></ion-icon>
-            <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day as number)}.${formatDate(contact.birthday.month as number)}.${contact.birthday.year}` : '' }}</ion-label>
+            <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day)}.${formatDate(contact.birthday.month)}.${contact.birthday.year}` : '' }}</ion-label>
           </ion-item>
         </ion-card-content>
       </ion-card>
@@ -110,7 +110,7 @@ export default defineComponent({
     const router = useRouter();
 
     // Funktion zum Formatieren von Datumswerten
-    const formatDate = (date: number) => {
+    const formatDate = (date) => {
       var new_date = date.toString();
 
       if (new_date.length < 2) {
@@ -206,8 +206,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Modernisierte Stile für die Kontakt-Detailseite */
-
+ion-title {
+  font-size: x-large;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 ion-toolbar {
   --color: white;
   --background: #3880ff;
@@ -219,8 +221,9 @@ ion-card {
 }
 
 ion-card-title {
-  font-size: 1.5rem;
+  font-size: x-large;
   font-weight: bold;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 ion-item {
@@ -231,10 +234,5 @@ ion-item {
 
 ion-item ion-icon {
   color: #3880ff;
-}
-
-ion-label {
-  font-size: 1rem;
-  color: #333;
 }
 </style>
