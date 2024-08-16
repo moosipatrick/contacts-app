@@ -39,12 +39,12 @@
             <ion-icon 
               :icon="copyOutline" 
               slot="end" 
-              @click="copyToClipboard(contact.phones?.[0]?.number ?? undefined)">
+              @click="copyToClipboard(contact.phones?.[0]?.number ?? undefined, 'Telefonnummer')">
             </ion-icon>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon :icon="mailOutline" slot="start"></ion-icon>
+            <ion-icon :icon="atOutline" slot="start"></ion-icon>
             <ion-label>{{ contact.emails?.[0]?.address || 'Keine E-Mail-Adresse' }}</ion-label>
 
             <!-- Icon zum Öffnen der Standard-E-Mail-App -->
@@ -59,7 +59,7 @@
             <ion-icon 
               :icon="copyOutline" 
               slot="end" 
-              @click="copyToClipboard(contact.emails?.[0]?.address ?? undefined)">
+              @click="copyToClipboard(contact.emails?.[0]?.address ?? undefined, 'E-Mail-Adresse')">
             </ion-icon>
           </ion-item>
 
@@ -114,7 +114,7 @@ import {
 import { defineComponent } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { Contacts, ContactPayload } from "@capacitor-community/contacts";
-import { trashBinOutline, phonePortraitOutline, mailOutline, arrowBackOutline, giftOutline, callOutline, copyOutline } from "ionicons/icons";
+import { trashBinOutline, phonePortraitOutline, mailOutline, arrowBackOutline, giftOutline, callOutline, copyOutline, atOutline } from "ionicons/icons";
 import { Clipboard } from '@capacitor/clipboard';
 import { Toast } from '@capacitor/toast';
 
@@ -161,6 +161,7 @@ export default defineComponent({
       router,
       callOutline,
       copyOutline,
+      atOutline,
       formatDate 
     };
   },
@@ -243,18 +244,18 @@ export default defineComponent({
         this.showToast('Keine Telefonnummer verfügbar');
       }
     },
-    async copyToClipboard(text: string | undefined) {
+    async copyToClipboard(text: string | undefined, type: 'Telefonnummer' | 'E-Mail-Adresse') {
       if (text) {
         try {
           await Clipboard.write({
             string: text
           });
-          this.showToast('Telefonnummer in die Zwischenablage kopiert');
+          this.showToast(`${type} in die Zwischenablage kopiert`);
         } catch (error) {
-          this.showToast('Fehler beim Kopieren der Telefonnummer');
+          this.showToast(`Fehler beim Kopieren der ${type}`);
         }
       } else {
-        this.showToast('Keine Telefonnummer verfügbar');
+        this.showToast(`Keine ${type} verfügbar`);
       }
     },
     sendEmail(email: string | undefined) {
@@ -267,8 +268,8 @@ export default defineComponent({
     async showToast(message: string) {
       await Toast.show({
         text: message,
-        duration: 'short', // 'short' or 'long'
-        position: 'bottom' // 'bottom', 'top', or 'center'
+        duration: 'short',
+        position: 'bottom'
       });
     }
   }
