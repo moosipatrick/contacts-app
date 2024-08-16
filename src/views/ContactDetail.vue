@@ -23,21 +23,27 @@
         </ion-card-header>
         
         <ion-card-content>
-          <ion-item lines="none">
-            <ion-icon :icon="phonePortraitOutline" slot="start"></ion-icon>
-            <ion-label>{{ contact.phones?.[0]?.number || 'Keine Telefonnummer' }}</ion-label>
-          </ion-item>
-          
-          <ion-item lines="none">
-            <ion-icon :icon="mailOutline" slot="start"></ion-icon>
-            <ion-label>{{ contact.emails?.[0]?.address || 'Keine E-Mail-Adresse' }}</ion-label>
-          </ion-item>
+  <ion-item lines="none">
+    <ion-icon :icon="phonePortraitOutline" slot="start"></ion-icon>
+    <ion-label>{{ contact.phones?.[0]?.number || 'Keine Telefonnummer' }}</ion-label>
+    
+    <!-- Icon zum Anrufen der Telefonnummer -->
+    <ion-icon :icon="callOutline" slot="end" @click="callNumber(contact.phones?.[0]?.number ?? undefined)" style="margin-right: 10px;"></ion-icon>
 
-          <ion-item lines="none">
-            <ion-icon :icon="giftOutline" slot="start"></ion-icon>
-            <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day as number)}.${formatDate(contact.birthday.month as number)}.${contact.birthday.year}` : '' }}</ion-label>
-          </ion-item>
-        </ion-card-content>
+    <!-- Icon zum Kopieren der Telefonnummer in die Zwischenablage -->
+    <ion-icon :icon="copyOutline" slot="end" @click="copyToClipboard(contact.phones?.[0]?.number ?? undefined)"></ion-icon>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-icon :icon="mailOutline" slot="start"></ion-icon>
+    <ion-label>{{ contact.emails?.[0]?.address || 'Keine E-Mail-Adresse' }}</ion-label>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-icon :icon="giftOutline" slot="start"></ion-icon>
+    <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day as number)}.${formatDate(contact.birthday.month as number)}.${contact.birthday.year}` : '' }}</ion-label>
+  </ion-item>
+</ion-card-content>
       </ion-card>
 
       <ion-toast
@@ -84,7 +90,9 @@ import {
 import { defineComponent } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { Contacts, ContactPayload } from "@capacitor-community/contacts";
-import { trashBinOutline, phonePortraitOutline, mailOutline, arrowBackOutline, giftOutline } from "ionicons/icons";
+import { trashBinOutline, phonePortraitOutline, mailOutline, arrowBackOutline, giftOutline, callOutline, copyOutline } from "ionicons/icons";
+import { Clipboard } from '@capacitor/clipboard';
+import { Toast } from '@capacitor/toast';
 
 export default defineComponent({
   components: {
@@ -127,6 +135,8 @@ export default defineComponent({
       arrowBackOutline,
       giftOutline, 
       router,
+      callOutline,
+      copyOutline,
       formatDate 
     };
   },
@@ -201,7 +211,36 @@ export default defineComponent({
         this.showErrorToast = true;
       }
     },
-  },
+
+    callNumber(number: string | undefined) {
+      if (number) {
+        window.open(`tel:${number}`, '_system');
+      } else {
+        this.showToast('Keine Telefonnummer verfügbar');
+      }
+    },
+    async copyToClipboard(text: string | undefined) {
+      if (text) {
+        try {
+          await Clipboard.write({
+            string: text
+          });
+          this.showToast('Telefonnummer in die Zwischenablage kopiert');
+        } catch (error) {
+          this.showToast('Fehler beim Kopieren der Telefonnummer');
+        }
+      } else {
+        this.showToast('Keine Telefonnummer verfügbar');
+      }
+    },
+    async showToast(message: string) {
+      await Toast.show({
+        text: message,
+        duration: 'short', // 'short' or 'long'
+        position: 'bottom' // 'bottom', 'top', or 'center'
+      });
+    }
+  }
 });
 </script>
 
