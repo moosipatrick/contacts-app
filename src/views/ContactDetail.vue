@@ -65,7 +65,7 @@
 
           <ion-item lines="none">
             <ion-icon :icon="giftOutline" slot="start"></ion-icon>
-            <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day as number)}.${formatDate(contact.birthday.month as number)}.${contact.birthday.year}` : '' }}</ion-label>
+            <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day as number)}.${formatDate(contact.birthday.month as number)}.${contact.birthday.year}` : 'Kein Geburtsdatum' }}</ion-label>
           </ion-item>
         </ion-card-content>
       </ion-card>
