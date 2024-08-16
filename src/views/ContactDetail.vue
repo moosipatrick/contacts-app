@@ -23,27 +23,51 @@
         </ion-card-header>
         
         <ion-card-content>
-  <ion-item lines="none">
-    <ion-icon :icon="phonePortraitOutline" slot="start"></ion-icon>
-    <ion-label>{{ contact.phones?.[0]?.number || 'Keine Telefonnummer' }}</ion-label>
-    
-    <!-- Icon zum Anrufen der Telefonnummer -->
-    <ion-icon :icon="callOutline" slot="end" @click="callNumber(contact.phones?.[0]?.number ?? undefined)" style="margin-right: 10px;"></ion-icon>
+          <ion-item lines="none">
+            <ion-icon :icon="phonePortraitOutline" slot="start"></ion-icon>
+            <ion-label>{{ contact.phones?.[0]?.number || 'Keine Telefonnummer' }}</ion-label>
+            
+            <!-- Icon zum Anrufen der Telefonnummer -->
+            <ion-icon 
+              :icon="callOutline" 
+              slot="end" 
+              @click="callNumber(contact.phones?.[0]?.number ?? undefined)" 
+              style="margin-right: 10px;">
+            </ion-icon>
 
-    <!-- Icon zum Kopieren der Telefonnummer in die Zwischenablage -->
-    <ion-icon :icon="copyOutline" slot="end" @click="copyToClipboard(contact.phones?.[0]?.number ?? undefined)"></ion-icon>
-  </ion-item>
+            <!-- Icon zum Kopieren der Telefonnummer in die Zwischenablage -->
+            <ion-icon 
+              :icon="copyOutline" 
+              slot="end" 
+              @click="copyToClipboard(contact.phones?.[0]?.number ?? undefined)">
+            </ion-icon>
+          </ion-item>
 
-  <ion-item lines="none">
-    <ion-icon :icon="mailOutline" slot="start"></ion-icon>
-    <ion-label>{{ contact.emails?.[0]?.address || 'Keine E-Mail-Adresse' }}</ion-label>
-  </ion-item>
+          <ion-item lines="none">
+            <ion-icon :icon="mailOutline" slot="start"></ion-icon>
+            <ion-label>{{ contact.emails?.[0]?.address || 'Keine E-Mail-Adresse' }}</ion-label>
 
-  <ion-item lines="none">
-    <ion-icon :icon="giftOutline" slot="start"></ion-icon>
-    <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day as number)}.${formatDate(contact.birthday.month as number)}.${contact.birthday.year}` : '' }}</ion-label>
-  </ion-item>
-</ion-card-content>
+            <!-- Icon zum Öffnen der Standard-E-Mail-App -->
+            <ion-icon 
+              :icon="mailOutline" 
+              slot="end" 
+              @click="sendEmail(contact.emails?.[0]?.address ?? undefined)" 
+              style="margin-right: 10px;">
+            </ion-icon>
+
+            <!-- Icon zum Kopieren der E-Mail-Adresse in die Zwischenablage -->
+            <ion-icon 
+              :icon="copyOutline" 
+              slot="end" 
+              @click="copyToClipboard(contact.emails?.[0]?.address ?? undefined)">
+            </ion-icon>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon :icon="giftOutline" slot="start"></ion-icon>
+            <ion-label>{{ contact.birthday ? `${formatDate(contact.birthday.day as number)}.${formatDate(contact.birthday.month as number)}.${contact.birthday.year}` : '' }}</ion-label>
+          </ion-item>
+        </ion-card-content>
       </ion-card>
 
       <ion-toast
@@ -231,6 +255,13 @@ export default defineComponent({
         }
       } else {
         this.showToast('Keine Telefonnummer verfügbar');
+      }
+    },
+    sendEmail(email: string | undefined) {
+      if (email) {
+        window.open(`mailto:${email}`, '_system');
+      } else {
+        this.showToast('Keine E-Mail-Adresse verfügbar');
       }
     },
     async showToast(message: string) {
