@@ -166,7 +166,6 @@ export default defineComponent({
     },
     closeAddContactModal() {
       this.isAddContactModalOpen = false;
-      this.isAddContactModalOpen = false;
       this.newContact.phoneNumber = '';
       this.newContact.birthday = '';
       this.newContact.emailAddress = '';
